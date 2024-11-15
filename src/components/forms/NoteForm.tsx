@@ -18,10 +18,9 @@ export function NoteForm() {
     });
   const [body, setBody] = useState("");
 
-  // Ensure body value is set in react-hook-form
   const onBodyChange = (content: string) => {
     setBody(content);
-    setValue("body", content); // Update the form body value
+    setValue("body", content);
   };
 
   const onSubmit = (data: IFormInput) => {
@@ -43,7 +42,6 @@ export function NoteForm() {
       e.preventDefault();
       const newTag = tag.trim();
 
-      // Only add the tag if it is non-empty, not already in the list, and triggered by Enter or comma
       if (newTag && !formTags.includes(newTag)) {
         setFormTags([...formTags, newTag]);
         resetField("tags");
@@ -70,39 +68,39 @@ export function NoteForm() {
             })}
           />
         </div>
+        <hr className="-mt-[10px] -mb-[0px]" />
         <div className="flex flex-col gap-[20px] border p-4 rounded-lg">
           <input
             className="focus:outline-none w-full"
             placeholder="Enter tags here"
-            {...register("tags", { maxLength: 20 })}
+            {...register("tags", { maxLength: 20, pattern: /^[A-Za-z]+$/i })}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={handleAddTag}
           />
-          {formTags.length > 0 && (
-            <>
-              <hr className="-my-[5px]" />
-              <div className="flex flex-row gap-[10px] max-w-full flex-wrap">
-                {formTags.map((tag, index) => (
-                  <span
-                    className="bg-red-200 pl-[20px] rounded-lg w-fit flex flex-row gap-[10px] "
-                    key={index}
-                  >
-                    <p className="py-[5px]">{tag}</p>
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center flex-grow w-[30px]"
-                      onClick={() =>
-                        setFormTags(formTags.filter((t) => t !== tag))
-                      }
-                    >
-                      <i className="fa-solid fa-xmark"></i>
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
         </div>
+        {formTags.length > 0 && (
+          <>
+            <div className="flex flex-row gap-[10px] max-w-full flex-wrap -mt-[10px] -mb-[5px]">
+              {formTags.map((tag, index) => (
+                <span
+                  className="bg-red-200 pl-[20px] rounded-lg w-fit flex flex-row gap-[10px] "
+                  key={index}
+                >
+                  <p className="py-[5px]">{tag}</p>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center flex-grow w-[30px]"
+                    onClick={() =>
+                      setFormTags(formTags.filter((t) => t !== tag))
+                    }
+                  >
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
+                </span>
+              ))}
+            </div>
+          </>
+        )}
         <div className="border rounded-lg">
           <div className=" rounded-lg -m-1 relative">
             <Suspense fallback={<div>Loading editor...</div>}>
@@ -122,7 +120,7 @@ export function NoteForm() {
           </div>
         </div>
         <button
-          className="bg-blue-200 py-[5px] w-fit px-[40px] rounded-lg flex flex-row gap-[10px] items-center ml-auto"
+          className="bg-slate-900 hover:bg-slate-700 text-white py-[5px] w-fit px-[40px] rounded-lg flex flex-row gap-[10px] items-center ml-auto"
           type="submit"
         >
           <p>Save Note</p>
