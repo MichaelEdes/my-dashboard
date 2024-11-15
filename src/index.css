@@ -39,6 +39,34 @@
   border: none;
 }
 
+.ql-picker-label {
+  font-family: "Sora", sans-serif;
+}
+
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  border: none !important;
+  
+}
+
+.ql-snow.ql-toolbar .ql-picker-item {
+  color: rgb(86, 90, 96) ;
+}
+
+.ql-snow.ql-toolbar .ql-picker-item:hover {
+  color: rgb(23, 23, 23) ;
+}
+
+.ql-snow.ql-toolbar .ql-picker-item:focus {
+  color: rgb(23, 23, 23) ;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label, .ql-snow .ql-picker.ql-header svg {
+  margin-right: -5px;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label.ql-active{  color: rgb(10, 10, 10) !important;
+}
+
 .quill {
   box-shadow: none;
   border: none;
@@ -52,8 +80,9 @@
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
   border-color: #e5e7eb;
   border-radius: 4px;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   box-shadow: none;
+  position: absolute;
 }
 
 .ql-toolbar.ql-snow {
@@ -71,6 +100,42 @@
 }
 
 .ql-toolbar.ql-snow .ql-formats:hover {
-  background-color: #0c5ba9a4;
+  background-color: #ffffffa4;
   border-radius: 4px;
+}
+
+.ql-toolbar.ql-snow .ql-formats button,
+.ql-toolbar.ql-snow .ql-formats button .ql-stroke,
+.ql-link button .ql-stroke,
+.ql-toolbar.ql-snow button .ql-stroke .ql-thin,
+.ql-toolbar.ql-snow button .ql-list,
+.ql-toolbar.ql-snow .ql-formats button .ql-stroke,
+.ql-toolbar.ql-snow .ql-formats button .ql-fill {
+  stroke: rgb(172, 172, 172);
+}
+
+.ql-toolbar.ql-snow .ql-formats button:hover,
+.ql-toolbar.ql-snow .ql-formats button:hover .ql-active .ql-stroke,
+.ql-link button:hover .ql-stroke,
+.ql-toolbar.ql-snow button:hover .ql-stroke .ql-thin,
+.ql-toolbar.ql-snow button:hover .ql-list,
+.ql-toolbar.ql-snow .ql-formats button:hover .ql-stroke,
+.ql-toolbar.ql-snow .ql-formats button:hover .ql-fill {
+  stroke: rgb(0, 0, 0);
+}
+
+.ql-toolbar.ql-snow .ql-formats button:hover {
+  background-color: #e5e7eb;
+  border-radius: 4px;
+
+}
+
+.ql-toolbar.ql-snow .ql-formats .ql-active,
+.ql-toolbar.ql-snow .ql-formats .ql-active .ql-stroke,
+.ql-link .ql-active .ql-stroke,
+.ql-toolbar.ql-snow .ql-active .ql-stroke .ql-thin,
+.ql-toolbar.ql-snow .ql-active .ql-list,
+.ql-toolbar.ql-snow .ql-formats .ql-active .ql-stroke,
+.ql-toolbar.ql-snow .ql-formats .ql-active .ql-fill {
+  stroke: rgb(5, 5, 5) !important;
 }
