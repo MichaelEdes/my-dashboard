@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
 
 interface IFormInput {
   title: string;
@@ -10,63 +11,124 @@ interface IFormInput {
 export function NoteForm() {
   const [formTags, setFormTags] = useState<string[]>([]);
   const [tag, setTag] = useState("");
-  const { register, handleSubmit, resetField, reset } = useForm<IFormInput>({
-    defaultValues: { title: "", body: "", tags: [] }
-  });
+  const { register, handleSubmit, resetField, reset, setValue } =
+    useForm<IFormInput>({
+      progressive: true,
+      defaultValues: { title: "", body: "", tags: [] }
+    });
+  const [body, setBody] = useState("");
+
+  // Ensure body value is set in react-hook-form
+  const onBodyChange = (content: string) => {
+    setBody(content);
+    setValue("body", content); // Update the form body value
+  };
 
   const onSubmit = (data: IFormInput) => {
     const updatedData = {
       ...data,
       tags: formTags
     };
-    console.log(updatedData);
+    alert(JSON.stringify(updatedData));
 
     reset();
     setFormTags([]);
+    setBody("");
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    const isEnterOrComma = e.key === "Enter" || e.key === "," || e.key === " ";
+
+    if (isEnterOrComma) {
       e.preventDefault();
+      const newTag = tag.trim();
+
+      // Only add the tag if it is non-empty, not already in the list, and triggered by Enter or comma
+      if (newTag && !formTags.includes(newTag)) {
+        setFormTags([...formTags, newTag]);
+        resetField("tags");
+      }
+      setTag("");
     }
-    const newTag = tag.trim();
-    if ((e.key !== "Enter" && e.key !== ",") || newTag.length === 0) {
-      return;
-    }
-    if (!formTags.includes(newTag)) {
-      setFormTags([...formTags, newTag]);
-      resetField("tags");
-    }
-    setTag("");
   };
 
   return (
     <>
       <h1>Form</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Title</label>
-        <input {...register("title", { required: true, maxLength: 20 })} />
-        <label>Content</label>
-        <input {...register("body", { required: true })} />
-        <label>Tag Input</label>
-        <input
-          {...register("tags", { maxLength: 20 })}
-          onChange={(e) => setTag(e.target.value)}
-          onKeyDown={handleAddTag}
-        />
-        <input type="submit" />
+      <form
+        className="p-10 border rounded-2xl mx-10 flex flex-col gap-[30px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div>
+          <input
+            className="text-5xl my-[30px] focus:outline-none w-full"
+            placeholder="Title..."
+            maxLength={20}
+            {...register("title", {
+              required: true,
+              maxLength: 20
+            })}
+          />
+        </div>
+        <div className="flex flex-col gap-[20px] border p-4 rounded-lg">
+          <input
+            className="focus:outline-none w-full"
+            placeholder="Enter tags here"
+            {...register("tags", { maxLength: 20 })}
+            onChange={(e) => setTag(e.target.value)}
+            onKeyDown={handleAddTag}
+          />
+          {formTags.length > 0 && (
+            <>
+              <hr className="-my-[5px]" />
+              <div className="flex flex-row gap-[10px] max-w-full flex-wrap">
+                {formTags.map((tag, index) => (
+                  <span
+                    className="bg-red-200 pl-[20px] rounded-lg w-fit flex flex-row gap-[10px] "
+                    key={index}
+                  >
+                    <p className="py-[5px]">{tag}</p>
+                    <button
+                      type="button"
+                      className="inline-flex items-center justify-center flex-grow w-[30px]"
+                      onClick={() =>
+                        setFormTags(formTags.filter((t) => t !== tag))
+                      }
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+        <div className="border rounded-lg">
+          <div className=" rounded-lg -m-1 relative">
+            <Suspense fallback={<div>Loading editor...</div>}>
+              <ReactQuill
+                theme="snow"
+                value={body}
+                onChange={onBodyChange}
+                placeholder="Enter note details"
+                className="h-full shadow-none"
+              />
+              <input
+                type="hidden"
+                {...register("body", { required: true })}
+                value={body}
+              />
+            </Suspense>
+          </div>
+        </div>
+        <button
+          className="bg-blue-200 py-[5px] w-fit px-[40px] rounded-lg flex flex-row gap-[10px] items-center ml-auto"
+          type="submit"
+        >
+          <p>Save Note</p>
+          <i className="fa-solid fa-floppy-disk"></i>
+        </button>
       </form>
-      {formTags.map((tag, index) => (
-        <span className="bg-blue-400 py-2 px-[20px] rounded-xl" key={index}>
-          {tag}
-          <span
-            className="pl-[20px] bg-red-400 text-xs rounded-xl cursor-pointer"
-            onClick={() => setFormTags(formTags.filter((t) => t !== tag))}
-          >
-            delete
-          </span>
-        </span>
-      ))}
     </>
   );
 }

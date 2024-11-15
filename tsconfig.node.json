@@ -43,7 +43,8 @@
   },
   "include": [
     "vite.config.ts",
-    "src"
+    "src",
+    "vite-env.d.ts"
   ],
   "exclude": [
     "node_modules"
