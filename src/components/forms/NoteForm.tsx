@@ -1,6 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
+import { useNavigate } from "react-router-dom";
 
 interface IFormInput {
   title: string;
@@ -17,12 +18,12 @@ export function NoteForm() {
       defaultValues: { title: "", body: "", tags: [] }
     });
   const [body, setBody] = useState("");
+  const navigate = useNavigate();
 
   const onBodyChange = (content: string) => {
     setBody(content);
     setValue("body", content);
   };
-
   const onSubmit = (data: IFormInput) => {
     const updatedData = {
       ...data,
@@ -30,6 +31,7 @@ export function NoteForm() {
     };
     alert(JSON.stringify(updatedData));
 
+    navigate("..");
     reset();
     setFormTags([]);
     setBody("");
