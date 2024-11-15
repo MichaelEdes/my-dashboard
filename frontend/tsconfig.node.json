@@ -28,6 +28,9 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@interfaces/*": [
+        "src/types/interfaces/*"
       ]
     },
     "composite": true,

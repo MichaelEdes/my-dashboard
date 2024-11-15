@@ -1,0 +1,4 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+export function NoteCard({ id, title, body, tags }) {
+    return (_jsxs("div", { className: "border px-6 pb-[20px] rounded-lg flex flex-col gap-[20px]", id: JSON.stringify(id), children: [_jsx("h2", { className: "text-2xl font-semibold pt-[30px]", children: title }), _jsx("hr", {}), tags.length > 0 && (_jsxs(_Fragment, { children: [_jsx("div", { className: "flex flex-wrap gap-[10px] text-sm", children: tags.map((tag, index) => (_jsx("span", { className: "text-xs bg-red-200 px-[20px] py-[5px] rounded-lg", children: tag }, index))) }), _jsx("hr", {})] })), _jsx("p", { dangerouslySetInnerHTML: { __html: body }, className: "line-clamp-3 text-sm text-slate-700" }), _jsx("button", { className: "w-fit text-sm font-bold mt-auto", children: "view full note" })] }));
+}

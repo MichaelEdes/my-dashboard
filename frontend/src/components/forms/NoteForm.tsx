@@ -2,19 +2,13 @@ import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
-
-interface IFormInput {
-  title: string;
-  body: string;
-  tags: string[];
-}
+import { INote } from "@interfaces/INote";
 
 export function NoteForm() {
   const [formTags, setFormTags] = useState<string[]>([]);
   const [tag, setTag] = useState("");
   const { register, handleSubmit, resetField, reset, setValue } =
-    useForm<IFormInput>({
-      progressive: true,
+    useForm<INote>({
       defaultValues: { title: "", body: "", tags: [] }
     });
   const [body, setBody] = useState("");
@@ -24,23 +18,51 @@ export function NoteForm() {
     setBody(content);
     setValue("body", content);
   };
-  const onSubmit = (data: IFormInput) => {
+
+  const onSubmit = async (data: INote) => {
     const updatedData = {
-      ...data,
+      title: data.title,
+      body: body,
       tags: formTags
     };
-    alert(JSON.stringify(updatedData));
 
-    navigate("..");
-    reset();
-    setFormTags([]);
-    setBody("");
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedData)
+      });
+
+      if (response.ok) {
+        const createdNote = await response.json();
+
+        // Update the cache in localStorage
+        const cachedNotes = localStorage.getItem("notes");
+        const notes = cachedNotes ? JSON.parse(cachedNotes) : [];
+        const updatedNotes = [...notes, createdNote];
+        localStorage.setItem("notes", JSON.stringify(updatedNotes));
+
+        navigate("/notes"); // Navigate back to the NotesList page
+        reset();
+        setFormTags([]);
+        setBody("");
+      } else {
+        const errorData = await response.json();
+        console.error("Backend Error Response:", errorData);
+        alert(`Failed to save the note: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Network Error:", error);
+      alert("An error occurred while saving the note.");
+    }
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const isEnterOrComma = e.key === "Enter" || e.key === "," || e.key === " ";
 
-    if (isEnterOrComma) {
+    if (isEnterOrComma && formTags.length < 5) {
       e.preventDefault();
       const newTag = tag.trim();
 
@@ -63,21 +85,24 @@ export function NoteForm() {
           <input
             className="text-5xl my-[30px] focus:outline-none w-full"
             placeholder="Title..."
-            maxLength={20}
+            maxLength={40}
             {...register("title", {
               required: true,
-              maxLength: 20
+              maxLength: 40
             })}
           />
         </div>
         <hr className="-mt-[10px] -mb-[0px]" />
-        <div className="flex flex-col gap-[20px] border p-4 rounded-lg">
+        <div className="flex flex-col gap-[20px]">
           <input
-            className="focus:outline-none w-full"
-            placeholder="Enter tags here"
+            className="focus:outline-none w-full disabled:opacity-70  p-4 border rounded-lg"
+            placeholder={
+              formTags.length < 5 ? "Enter Tags" : "Max tags reached"
+            }
             {...register("tags", { maxLength: 20, pattern: /^[A-Za-z]+$/i })}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={handleAddTag}
+            disabled={formTags.length >= 5}
           />
         </div>
         {formTags.length > 0 && (
