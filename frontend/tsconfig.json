@@ -7,41 +7,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "allowImportingTsExtensions": true,
-  "noEmit": true,
-  "noUncheckedSideEffectImports": true,
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@context/*": [
-        "src/context/*"
-      ],
-      "@data/*": [
-        "src/data/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@interfaces/*": [
-        "src/types/interfaces/*"
-      ]
-    }
-  },
-  "include": [
-    "src",
-    "vite-env.d.ts"
   ]
 }

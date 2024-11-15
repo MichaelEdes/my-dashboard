@@ -1,4 +1,4 @@
-import { INote } from "@interfaces/INote";
+import { INote } from "../types/interfaces/INote";
 
 export function NoteCard({ id, title, body, tags }: INote) {
   return (

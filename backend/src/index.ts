@@ -5,7 +5,19 @@ import pool from "./db"; // Assuming you have a database connection pool set up
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173" })); // Allow requests from the frontend
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowedOrigins = ["http://localhost:5173", "http://localhost:4173"];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Optional: If you're using cookies or auth headers
+  })
+);
 app.use(express.json()); // Parse JSON request bodies
 
 // POST /notes endpoint

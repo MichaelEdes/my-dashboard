@@ -2,14 +2,14 @@ import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
-import { INote } from "@interfaces/INote";
+import { INote } from "../../types/interfaces/INote";
 
 export function NoteForm() {
   const [formTags, setFormTags] = useState<string[]>([]);
   const [tag, setTag] = useState("");
   const { register, handleSubmit, resetField, reset, setValue } =
     useForm<INote>({
-      defaultValues: { title: "", body: "", tags: [] }
+      defaultValues: { title: "", body: "", tags: [] },
     });
   const [body, setBody] = useState("");
   const navigate = useNavigate();
@@ -23,16 +23,16 @@ export function NoteForm() {
     const updatedData = {
       title: data.title,
       body: body,
-      tags: formTags
+      tags: formTags,
     };
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify(updatedData),
       });
 
       if (response.ok) {
@@ -88,7 +88,7 @@ export function NoteForm() {
             maxLength={40}
             {...register("title", {
               required: true,
-              maxLength: 40
+              maxLength: 40,
             })}
           />
         </div>

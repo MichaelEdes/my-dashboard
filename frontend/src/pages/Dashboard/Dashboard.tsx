@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import "./Dashboard.css";
 import { NewNote } from "../Notes/NewNote";
-import NotesList from "@pages/Notes/NotesList";
+import NotesList from "../../pages/Notes/NotesList";
 
 function App() {
   return (

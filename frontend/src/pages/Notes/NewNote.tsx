@@ -1,4 +1,4 @@
-import { NoteForm } from "@components/forms/NoteForm";
+import { NoteForm } from "../../components/forms/NoteForm";
 
 export function NewNote() {
   return (

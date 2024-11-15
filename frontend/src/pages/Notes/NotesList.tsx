@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import debounce from "lodash/debounce";
-import { NoteCard } from "@components/NoteCard";
+import { NoteCard } from "../../components/NoteCard";
 
 interface INote {
   id: number;
@@ -14,7 +14,7 @@ export function NotesList() {
   const [notes, setNotes] = useState<INote[]>([]);
   const [filteredNotes, setFilteredNotes] = useState<INote[]>([]);
   const { register } = useForm({
-    defaultValues: { body: "" }
+    defaultValues: { body: "" },
   });
 
   useEffect(() => {
