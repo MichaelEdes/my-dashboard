@@ -3,4 +3,5 @@ export interface INote {
   title: string;
   body: string;
   tags: string[];
+  created_at: string;
 }

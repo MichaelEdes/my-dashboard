@@ -9,7 +9,7 @@ export function NoteForm() {
   const [tag, setTag] = useState("");
   const { register, handleSubmit, resetField, reset, setValue } =
     useForm<INote>({
-      defaultValues: { title: "", body: "", tags: [] },
+      defaultValues: { title: "", body: "", tags: [] }
     });
   const [body, setBody] = useState("");
   const navigate = useNavigate();
@@ -19,20 +19,40 @@ export function NoteForm() {
     setValue("body", content);
   };
 
+  const cleanHTML = (html: string): string => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const paragraphs = doc.querySelectorAll("p");
+    paragraphs.forEach((p) => {
+      if (!p.textContent?.trim() && !p.querySelector("img")) {
+        p.remove();
+      }
+    });
+
+    return doc.body.innerHTML.trim();
+  };
+
   const onSubmit = async (data: INote) => {
+    const cleanedBody = cleanHTML(body);
+
+    if (!cleanedBody || cleanedBody === "<p><br></p>") {
+      alert("Body cannot be empty or just whitespace.");
+      return;
+    }
+
     const updatedData = {
       title: data.title,
-      body: body,
-      tags: formTags,
+      body: cleanedBody,
+      tags: formTags
     };
-
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify(updatedData)
       });
 
       if (response.ok) {
@@ -44,8 +64,6 @@ export function NoteForm() {
         const updatedNotes = [...notes, createdNote];
         localStorage.setItem("notes", JSON.stringify(updatedNotes));
 
-        navigate("/notes"); // Navigate back to the NotesList page
-        reset();
         setFormTags([]);
         setBody("");
       } else {
@@ -88,7 +106,7 @@ export function NoteForm() {
             maxLength={40}
             {...register("title", {
               required: true,
-              maxLength: 40,
+              maxLength: 40
             })}
           />
         </div>
