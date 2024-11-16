@@ -6,7 +6,7 @@ export function NoteCard({ id, title, body, tags }: INote) {
       className="border px-6 pb-[20px] rounded-lg flex flex-col gap-[20px]"
       id={JSON.stringify(id)}
     >
-      <h2 className="text-2xl font-semibold pt-[30px]">{title}</h2>
+      <h2 className="text-2xl font-semibold pt-[30px] truncate">{title}</h2>
       <hr />
       {tags.length > 0 && (
         <>
