@@ -15,7 +15,7 @@ console.error = (message, ...args) => {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_relativeSplatPath: true }}>
       <App />
     </BrowserRouter>
   </StrictMode>

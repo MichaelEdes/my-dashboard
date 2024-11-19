@@ -1,0 +1,111 @@
+
+
+[data-theme="ocean-breeze"] {
+  --primary: #0077B6; /* Deep Blue */
+  --secondary: #0096C7; /* Aqua Blue */
+  --background: #CAF0F8; /* Soft Blue */
+  --text: #03045E; /* Navy Blue */
+  --accent: #00B4D8; /* Bright Cyan */
+  --warning: #FFC107; /* Yellow */
+  --error: #E63946; /* Red */
+  --success: #52B788; /* Green */
+}
+
+[data-theme="sunset-glow"] {
+  --primary: #FF6F61; /* Coral */
+  --secondary: #FFA69E; /* Soft Peach */
+  --background: #FFE8E5; /* Light Pink */
+  --text: #A8333F; /* Dark Burgundy */
+  --accent: #FFD1BA; /* Sandy Orange */
+  --warning: #FF9F1C; /* Bright Orange */
+  --error: #D7263D; /* Crimson */
+  --success: #86B487; /* Sage Green */
+}
+
+[data-theme="forest-whisper"] {
+  --primary: #35524A; /* Deep Forest Green */
+  --secondary: #6A8A82; /* Soft Green */
+  --background: #DDEDEA; /* Light Green */
+  --text: #1B3A4B; /* Dark Teal */
+  --accent: #A4C3B2; /* Mint */
+  --warning: #E9C46A; /* Golden Yellow */
+  --error: #E76F51; /* Burnt Orange */
+  --success: #2A9D8F; /* Teal */
+}
+
+[data-theme="midnight-elegance"] {
+  --primary: #2C2C54; /* Indigo */
+  --secondary: #474787; /* Purple */
+  --background: #F8F9FA; /* White Smoke */
+  --text: #1B1464; /* Dark Blue */
+  --accent: #706FD3; /* Soft Purple */
+  --warning: #FFC312; /* Gold */
+  --error: #ED4C67; /* Magenta */
+  --success: #12CBC4; /* Aqua Green */
+}
+
+[data-theme="desert-dunes"] {
+  --primary: #DAA520; /* Goldenrod */
+  --secondary: #F4A261; /* Sand */
+  --background: #FFEBCC; /* Pale Yellow */
+  --text: #5E3B1F; /* Dark Brown */
+  --accent: #E9C46A; /* Mustard */
+  --warning: #E76F51; /* Terracotta */
+  --error: #C0392B; /* Brick Red */
+  --success: #2ECC71; /* Jade Green */
+}
+
+[data-theme="arctic-chill"] {
+  --primary: #5DADE2; /* Sky Blue */
+  --secondary: #85C1E9; /* Light Blue */
+  --background: #EBF5FB; /* Ice White */
+  --text: #1A5276; /* Steel Blue */
+  --accent: #AED6F1; /* Glacier Blue */
+  --warning: #F5B041; /* Amber */
+  --error: #CB4335; /* Rose Red */
+  --success: #27AE60; /* Emerald Green */
+}
+
+[data-theme="vintage-rose"] {
+  --primary: #C86D66; /* Rosewood */
+  --secondary: #E89E89; /* Blush Pink */
+  --background: #F8E5E5; /* Pale Pink */
+  --text: #5D2A42; /* Deep Plum */
+  --accent: #F4C4C4; /* Faded Pink */
+  --warning: #F8B400; /* Goldenrod */
+  --error: #A32638; /* Ruby */
+  --success: #9FB798; /* Moss Green */
+}
+
+[data-theme="cyber-wave"] {
+  --primary: #FF3E96; /* Neon Pink */
+  --secondary: #5B84B1; /* Electric Blue */
+  --background: #1A1A1D; /* Dark Grey */
+  --text: #E8E8E8; /* Light Grey */
+  --accent: #FE91CA; /* Vibrant Pink */
+  --warning: #FFDD00; /* Bright Yellow */
+  --error: #FF003C; /* Scarlet */
+  --success: #3FE0D0; /* Neon Teal */
+}
+
+[data-theme="earthy-tones"] {
+  --primary: #8D8741; /* Olive Green */
+  --secondary: #BC986A; /* Tan */
+  --background: #F0E5D8; /* Cream */
+  --text: #463F3A; /* Dark Taupe */
+  --accent: #D4A373; /* Bronze */
+  --warning: #FFB400; /* Amber */
+  --error: #A23E48; /* Burgundy */
+  --success: #94C595; /* Light Sage */
+}
+
+[data-theme="royal-regalia"] {
+  --primary: #4B0082; /* Indigo */
+  --secondary: #8A2BE2; /* Blue Violet */
+  --background: #F5F5F5; /* Off White */
+  --text: #2E0854; /* Deep Purple */
+  --accent: #9370DB; /* Lavender */
+  --warning: #FF8C00; /* Dark Orange */
+  --error: #B22222; /* Firebrick */
+  --success: #228B22; /* Forest Green */
+}

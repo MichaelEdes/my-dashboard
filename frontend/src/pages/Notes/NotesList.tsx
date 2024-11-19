@@ -53,17 +53,6 @@ export function NotesList() {
     setFilteredNotes(results);
   }, 300);
 
-  const distributeNotes = (notes: INote[], numColumns: number) => {
-    const columns: INote[][] = Array.from({ length: numColumns }, () => []);
-    notes.forEach((note, index) => {
-      columns[index % numColumns].push(note);
-    });
-    return columns;
-  };
-
-  const numColumns = 4;
-  const columns = distributeNotes(filteredNotes, numColumns);
-
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Search Notes</h1>
@@ -75,22 +64,17 @@ export function NotesList() {
         onChange={(e) => handleSearch(e.target.value)}
       />
 
-      <div className="flex gap-4">
-        {columns.map((colNotes, colIndex) => (
-          <div
-            key={colIndex}
-            className="flex flex-col gap-4 w-full max-w-[25%]"
-          >
-            {colNotes.map((note) => (
-              <NoteCard
-                key={note.id}
-                id={note.id}
-                title={note.title}
-                body={note.body}
-                tags={note.tags}
-                created_at={note.created_at}
-              />
-            ))}
+      {/* Masonry-like Layout */}
+      <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+        {filteredNotes.map((note) => (
+          <div key={note.id} className="mb-4 break-inside-avoid">
+            <NoteCard
+              id={note.id}
+              title={note.title}
+              body={note.body}
+              tags={note.tags}
+              created_at={note.created_at}
+            />
           </div>
         ))}
       </div>
