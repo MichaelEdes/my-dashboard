@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { INote } from "../../types/interfaces/INote";
 
 export function NoteForm() {
@@ -64,6 +64,7 @@ export function NoteForm() {
         const updatedNotes = [...notes, createdNote];
         localStorage.setItem("notes", JSON.stringify(updatedNotes));
 
+        navigate("/");
         setFormTags([]);
         setBody("");
       } else {
@@ -93,16 +94,15 @@ export function NoteForm() {
   };
 
   return (
-    <>
-      <h1>Form</h1>
+    <div className="p-4">
       <form
-        className="p-10 border rounded-2xl mx-10 flex flex-col gap-[30px]"
+        className="p-10 rounded-2xl flex flex-col bg-white gap-[30px]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
           <input
-            className="text-5xl my-[30px] focus:outline-none w-full"
-            placeholder="Title..."
+            className="text-2xl focus:outline-none w-full"
+            placeholder="Note Title..."
             maxLength={40}
             {...register("title", {
               required: true,
@@ -113,7 +113,7 @@ export function NoteForm() {
         <hr className="-mt-[10px] -mb-[0px]" />
         <div className="flex flex-col gap-[20px]">
           <input
-            className="focus:outline-none w-full disabled:opacity-70  p-4 border rounded-lg"
+            className="focus:outline-none w-full disabled:opacity-70 placeholder:text-gray-400 p-4 border rounded-lg"
             placeholder={
               formTags.length < 5 ? "Enter Tags" : "Max tags reached"
             }
@@ -128,7 +128,7 @@ export function NoteForm() {
             <div className="flex flex-row gap-[10px] max-w-full flex-wrap -mt-[10px] -mb-[5px]">
               {formTags.map((tag, index) => (
                 <span
-                  className="bg-red-200 pl-[20px] rounded-lg w-fit flex flex-row gap-[10px] "
+                  className="bg-[--backgrou] text-[--text] pl-[20px] rounded-lg w-fit flex text-sm flex-row gap-[10px] "
                   key={index}
                 >
                   <p className="py-[5px]">{tag}</p>
@@ -172,7 +172,7 @@ export function NoteForm() {
           <i className="fa-solid fa-floppy-disk"></i>
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
