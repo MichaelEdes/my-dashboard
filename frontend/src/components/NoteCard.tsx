@@ -25,7 +25,6 @@ export function NoteCard({
     if (!date) return "Invalid date";
     const parsedDate = new Date(date);
 
-
     if (differenceInDays(new Date(), parsedDate) < 7) {
       return `${formatDistanceToNow(parsedDate, { addSuffix: true })}`;
     }
@@ -40,12 +39,7 @@ export function NoteCard({
     >
       <div className="flex flex-row justify-between items-center -mt-1 -mr-2">
         <div className="text-xs w-full text-start text-[--secondary] opacity-100">
-          {id}
-          <br></br>
-          <br></br>
-
-          <span>last updated: {formatLastUpdated(last_updated)}</span>
-          <br></br>
+          <span>{formatLastUpdated(last_updated)}</span>
         </div>
         <div className="relative text-xs rounded-full z-10">
           <MoreVertIcon

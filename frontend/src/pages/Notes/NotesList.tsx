@@ -29,10 +29,20 @@ export function NotesList() {
           id: Number(note.id)
         }));
 
-        setNotes(notesWithIdAsNumber);
-        setFilteredNotes(notesWithIdAsNumber);
+        // Sort notes by `last_updated` in descending order
+        const sortedNotes = notesWithIdAsNumber.sort(
+          (
+            a: { last_updated: string | number | Date },
+            b: { last_updated: string | number | Date }
+          ) =>
+            new Date(b.last_updated).getTime() -
+            new Date(a.last_updated).getTime()
+        );
 
-        localStorage.setItem("notes", JSON.stringify(notesWithIdAsNumber));
+        setNotes(sortedNotes);
+        setFilteredNotes(sortedNotes);
+
+        localStorage.setItem("notes", JSON.stringify(sortedNotes));
       } catch (error) {
         console.error("Error fetching notes:", error);
       }

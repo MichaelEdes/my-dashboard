@@ -56,6 +56,7 @@ export function NoteForm() {
 
   const onSubmit = async (data: INote) => {
     const cleanedBody = cleanHTML(body);
+    console.log("Server Time:", new Date());
 
     if (!cleanedBody || cleanedBody === "<p><br></p>") {
       alert("Body cannot be empty or just whitespace.");

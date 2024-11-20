@@ -57,19 +57,23 @@ app.put("/notes/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, body, tags } = req.body;
 
-  console.log("Request Body:", { id, title, body, tags }); // Debugging log
-
   if (!title || !body) {
     return res.status(400).json({ error: "Title and body are required." });
   }
 
   try {
-    const result = await pool.query(
-      "UPDATE notes SET title = $1, body = $2, tags = $3, last_updated = NOW() WHERE id = $4::int RETURNING *",
-      [title, body, tags, id]
-    );
+    const updateQuery = `
+      UPDATE notes
+      SET 
+        title = $1, 
+        body = $2, 
+        tags = $3, 
+        last_updated = CURRENT_TIMESTAMP
+      WHERE id = $4
+      RETURNING id, title, body, tags, created_at, last_updated;
+    `;
 
-    console.log("Query Result:", result.rows); // Debugging log
+    const result = await pool.query(updateQuery, [title, body, tags, id]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "Note not found." });
@@ -77,7 +81,7 @@ app.put("/notes/:id", async (req: Request, res: Response) => {
 
     res.status(200).json(result.rows[0]);
   } catch (err) {
-    console.error("Error updating note:", err); // Log detailed error
+    console.error("Error during update:", err);
     res.status(500).json({ error: "Failed to update note." });
   }
 });
