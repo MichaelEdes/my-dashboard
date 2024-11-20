@@ -1,18 +1,39 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { INote } from "../../types/interfaces/INote";
 
 export function NoteForm() {
+  const { id } = useParams<{ id: string }>();
   const [formTags, setFormTags] = useState<string[]>([]);
   const [tag, setTag] = useState("");
-  const { register, handleSubmit, resetField, reset, setValue } =
-    useForm<INote>({
-      defaultValues: { title: "", body: "", tags: [] }
-    });
+  const { register, handleSubmit, resetField, setValue } = useForm<INote>({
+    defaultValues: { title: "", body: "", tags: [] }
+  });
   const [body, setBody] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      const fetchNote = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/notes/${id}`
+          );
+          const note = await response.json();
+          setValue("title", note.title);
+          setValue("body", note.body);
+          setBody(note.body);
+          setFormTags(note.tags);
+        } catch (error) {
+          console.error("Error fetching note:", error);
+        }
+      };
+
+      fetchNote();
+    }
+  }, [id, setValue]);
 
   const onBodyChange = (content: string) => {
     setBody(content);
@@ -46,14 +67,19 @@ export function NoteForm() {
       body: cleanedBody,
       tags: formTags
     };
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedData)
-      });
+      const response = id
+        ? await fetch(`${import.meta.env.VITE_API_URL}/notes/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+          })
+        : await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+          });
 
       if (response.ok) {
         const createdNote = await response.json();
@@ -63,13 +89,11 @@ export function NoteForm() {
         const notes = cachedNotes ? JSON.parse(cachedNotes) : [];
         const updatedNotes = [...notes, createdNote];
         localStorage.setItem("notes", JSON.stringify(updatedNotes));
-
         navigate("/");
         setFormTags([]);
         setBody("");
       } else {
         const errorData = await response.json();
-        console.error("Backend Error Response:", errorData);
         alert(`Failed to save the note: ${errorData.error}`);
       }
     } catch (error) {
@@ -104,6 +128,7 @@ export function NoteForm() {
             className="text-2xl focus:outline-none w-full"
             placeholder="Note Title..."
             maxLength={40}
+            defaultValue=""
             {...register("title", {
               required: true,
               maxLength: 40
@@ -128,7 +153,7 @@ export function NoteForm() {
             <div className="flex flex-row gap-[10px] max-w-full flex-wrap -mt-[10px] -mb-[5px]">
               {formTags.map((tag, index) => (
                 <span
-                  className="bg-[--backgrou] text-[--text] pl-[20px] rounded-lg w-fit flex text-sm flex-row gap-[10px] "
+                  className="bg-[--background] text-[--text] pl-[20px] rounded-lg w-fit flex text-sm flex-row gap-[10px] "
                   key={index}
                 >
                   <p className="py-[5px]">{tag}</p>

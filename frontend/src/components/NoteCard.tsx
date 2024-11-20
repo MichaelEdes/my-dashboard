@@ -1,9 +1,10 @@
 import { INote } from "../types/interfaces/INote";
-import { format } from "date-fns";
+import { format, formatDistanceToNow, differenceInDays } from "date-fns";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface NoteCardProps extends INote {
   isDropdownOpen: boolean;
@@ -16,12 +17,19 @@ export function NoteCard({
   body,
   tags,
   created_at,
+  last_updated,
   isDropdownOpen,
   toggleDropdown
 }: NoteCardProps) {
-  const formattedDate = (date: string | undefined | null) => {
+  const formatLastUpdated = (date: string | undefined | null) => {
     if (!date) return "Invalid date";
     const parsedDate = new Date(date);
+
+
+    if (differenceInDays(new Date(), parsedDate) < 7) {
+      return `${formatDistanceToNow(parsedDate, { addSuffix: true })}`;
+    }
+
     return format(parsedDate, "MMMM dd yyyy");
   };
 
@@ -32,7 +40,12 @@ export function NoteCard({
     >
       <div className="flex flex-row justify-between items-center -mt-1 -mr-2">
         <div className="text-xs w-full text-start text-[--secondary] opacity-100">
-          {formattedDate(created_at)}
+          {id}
+          <br></br>
+          <br></br>
+
+          <span>last updated: {formatLastUpdated(last_updated)}</span>
+          <br></br>
         </div>
         <div className="relative text-xs rounded-full z-10">
           <MoreVertIcon
@@ -41,10 +54,12 @@ export function NoteCard({
           />
           {isDropdownOpen && (
             <ul className="mt-1 right-0 bg-white rounded-xl flex flex-col p-2 absolute w-[120px] shadow">
-              <li className="p-2 rounded-lg flex flex-row gap-[10px] text-xs items-center cursor-pointer hover:bg-gray-50">
-                <EditNoteIcon />
-                Edit
-              </li>
+              <Link to={`/edit-note/${id}`}>
+                <li className="p-2 rounded-lg flex flex-row gap-[10px] text-xs items-center cursor-pointer hover:bg-gray-50">
+                  <EditNoteIcon />
+                  Edit
+                </li>
+              </Link>
               <li className="p-2 rounded-lg flex flex-row text-[--error] gap-[10px] text-xs items-center cursor-pointer hover:bg-gray-50">
                 <DeleteIcon />
                 Delete

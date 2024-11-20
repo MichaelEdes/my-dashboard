@@ -1,7 +1,8 @@
 export interface INote {
-  id: string | undefined | number;
+  id: number;
   title: string;
   body: string;
   tags: string[];
   created_at: string;
+  last_updated?: string;
 }

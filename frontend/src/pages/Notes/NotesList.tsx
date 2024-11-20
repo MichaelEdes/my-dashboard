@@ -4,13 +4,7 @@ import debounce from "lodash/debounce";
 import { NoteCard } from "../../components/NoteCard";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-interface INote {
-  id: number;
-  title: string;
-  body: string;
-  tags: string[];
-  created_at: string;
-}
+import { INote } from "../../types/interfaces/INote";
 
 export function NotesList() {
   const [notes, setNotes] = useState<INote[]>([]);
@@ -29,10 +23,16 @@ export function NotesList() {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`);
         const data = await response.json();
-        setNotes(data);
-        setFilteredNotes(data);
 
-        localStorage.setItem("notes", JSON.stringify(data));
+        const notesWithIdAsNumber = data.map((note: INote) => ({
+          ...note,
+          id: Number(note.id)
+        }));
+
+        setNotes(notesWithIdAsNumber);
+        setFilteredNotes(notesWithIdAsNumber);
+
+        localStorage.setItem("notes", JSON.stringify(notesWithIdAsNumber));
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
@@ -91,6 +91,7 @@ export function NotesList() {
               body={note.body}
               tags={note.tags}
               created_at={note.created_at}
+              last_updated={note.last_updated}
               isDropdownOpen={openDropdownId === note.id}
               toggleDropdown={() => toggleDropdown(note.id)}
             />
